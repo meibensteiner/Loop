@@ -13,6 +13,9 @@ class IntentHandler: INExtension {
         if intent is EnableOverridePresetIntent {
             return OverrideIntentHandler()
         }
+        if intent is EnablePreMealIntent {
+            return PreMealIntentHandler()
+        }
         return self
     }
 }

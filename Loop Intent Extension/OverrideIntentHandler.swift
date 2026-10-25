@@ -63,3 +63,16 @@ class OverrideIntentHandler: NSObject, EnableOverridePresetIntentHandling {
         completion(INStringResolutionResult.success(with: overrideName))
     }    
 }
+
+class PreMealIntentHandler: NSObject, EnablePreMealIntentHandling {
+    func handle(intent: EnablePreMealIntent, completion: @escaping (EnablePreMealIntentResponse) -> Void) {
+        guard let defaults = UserDefaults(suiteName: Bundle.main.appGroupSuiteName) else {
+            completion(EnablePreMealIntentResponse(code: .failure, userActivity: nil))
+            return
+        }
+
+        defaults.intentExtensionEnablePreMeal = true
+        // Continue in app because the UserDefaults KVO doesn't work in the background
+        completion(EnablePreMealIntentResponse(code: .continueInApp, userActivity: nil))
+    }
+}

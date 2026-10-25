@@ -33,6 +33,7 @@
 			<key>IntentsSupported</key>
 			<array>
 				<string>EnableOverridePresetIntent</string>
+				<string>EnablePreMealIntent</string>
 				<string>NewCarbEntryIntent</string>
 			</array>
 		</dict>

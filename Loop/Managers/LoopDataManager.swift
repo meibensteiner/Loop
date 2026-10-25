@@ -63,6 +63,8 @@ final class LoopDataManager {
     
     private var overrideIntentObserver: NSKeyValueObservation? = nil
 
+    private var preMealIntentObserver: NSKeyValueObservation? = nil
+
     var presetActivationObservers: [PresetActivationObserver] = []
 
     private var timeBasedDoseApplicationFactor: Double = 1.0
@@ -167,6 +169,15 @@ final class LoopDataManager {
             appGroup.intentExtensionOverrideToSet = nil
         })
 
+        preMealIntentObserver = UserDefaults.appGroup?.observe(\.intentExtensionEnablePreMeal, options: [.new], changeHandler: {[weak self] (defaults, change) in
+            guard change.newValue == true, let appGroup = UserDefaults.appGroup else {
+                return
+            }
+
+            self?.enablePreMealFromIntent()
+            appGroup.intentExtensionEnablePreMeal = false
+        })
+
         // Required for device settings in stored dosing decisions
         UIDevice.current.isBatteryMonitoringEnabled = true
 
@@ -234,6 +245,20 @@ final class LoopDataManager {
                 self.cancelActiveTempBasal(for: .automaticDosingDisabled)
             } }
             .store(in: &cancellables)
+    }
+
+    private func enablePreMealFromIntent() {
+        guard settings.preMealTargetRange != nil,
+              automaticDosingStatus.automaticDosingEnabled || !FeatureFlags.simpleBolusCalculatorEnabled else {
+            logger.error("Override Intent: Pre-Meal is not available")
+            return
+        }
+
+        logger.default("Override Intent: enabling Pre-Meal")
+        mutateSettings { settings in
+            settings.clearOverride()
+            settings.enablePreMealOverride(for: .hours(1))
+        }
     }
 
     /// Loop-related settings

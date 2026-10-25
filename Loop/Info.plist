@@ -78,6 +78,7 @@
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>EnableOverridePresetIntent</string>
+		<string>EnablePreMealIntent</string>
 		<string>NewCarbEntry</string>
 		<string>NewCarbEntryIntent</string>
 		<string>ViewLoopStatus</string>

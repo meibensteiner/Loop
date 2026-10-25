@@ -14,6 +14,7 @@ extension UserDefaults {
         case IntentExtensionContext = "com.loopkit.Loop.IntentExtensionContext"
         // This key needs to be EXACTLY the same string as the objc dynamic var for the KVO to work correctly
         case IntentExtensionOverrideToSet = "intentExtensionOverrideToSet"
+        case IntentExtensionEnablePreMeal = "intentExtensionEnablePreMeal"
     }
     
     // Information for the extension from Loop
@@ -36,6 +37,15 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: Key.IntentExtensionOverrideToSet.rawValue)
+        }
+    }
+
+    @objc dynamic var intentExtensionEnablePreMeal: Bool {
+        get {
+            return bool(forKey: Key.IntentExtensionEnablePreMeal.rawValue)
+        }
+        set {
+            set(newValue, forKey: Key.IntentExtensionEnablePreMeal.rawValue)
         }
     }
 }
